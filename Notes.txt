@@ -1,0 +1,75 @@
+Part 0
+
+Install xampp
+
+The version used for this repository is 
+
+xampp version 1.7.5 with php version 5.3.8
+
+installer
+
+xampp-win32-1.7.5-VC9-installer
+
+Link of the installer
+
+https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/1.7.5/
+
+
+
+
+******************************************************************************
+
+Part 1 
+
+Introduction to the project
+
+Creating the repository in github
+
+1. Login into github
+
+2. Click create new repository
+
+3. Give the repository a name
+
+4. Open git in windows
+
+5. Cd into the folder where the code is located
+
+6. execute the following commands
+
+git init
+git add .
+git commit -m "first commit"
+git remote add origin https://github.com/HenryPineda/RegisterAndLogin.git
+git push -u origin master
+
+
+**********************************************************************************
+
+
+Part 2
+
+
+How to export the database from phpAdmin
+
+https://www.youtube.com/watch?v=ffmCGVse8yg
+
+1. GO to php admin
+
+2. click on the database that needs to be backed up.
+
+3. Click on the part EXPORT
+
+4. You will be presented with tow options.
+
+	- Quick
+	- Custom
+
+5. Save.
+
+
+
+
+
+
+
