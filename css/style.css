@@ -61,7 +61,7 @@ h2 {
     margin:0 0 10px 0;
     padding:0;
     width:200px;
-    /* color:#fff; */
+    color:#fff;
 
 }
 
@@ -80,7 +80,7 @@ body {
     width:920px;
     margin:0 auto;
     padding:20px;
-} */
+} 
 
 header {
 
@@ -94,7 +94,7 @@ header {
     min-height: 500px;
     border-radius:5px 5px 0 0;
 
-} */
+} 
 
  footer {
 
@@ -106,6 +106,14 @@ header {
 
     margin-bottom:20px;
 
+}
+
+.widget h2 {
+
+    margin:0 0 10px 0;
+    padding:0 5px;
+    font-weight: normal;
+    border-bottom:1px solid #ddd;
 }
 
 .widget .inner {
@@ -146,6 +154,17 @@ nav ul li.current {
 nav ul li a.last {
 
     border-right:0;
+
+}
+
+/* Aside */
+
+aside {
+
+    width:260px;
+    float:right;
+    border-left:1px dashed #aaa;
+    padding-left:15px;
 
 }
 
