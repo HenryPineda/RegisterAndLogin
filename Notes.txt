@@ -67,6 +67,62 @@ https://www.youtube.com/watch?v=ffmCGVse8yg
 
 5. Save.
 
+*************************************************************************************
+
+
+Part 3 and Part 4.
+
+
+In git I had to create and switch a new branch. As well a creating this new branch in github using the following command.
+
+git checkout -b Name_of_the_branch.
+
+I also created the new file directory and the splitting the pag in parts adding the following code the index file.
+
+<?php include '/core/init.php'; ?>
+
+<?php include '/includes/overall/header.php'; ?>
+
+    <h1>Home</h1>
+    <p>Just a template</p>
+    
+<?php include '/includes/overall/footer.php'; ?>
+
+
+The first include add the init file to the page which in addition to starting the session contains the connection to the database and to the users.php file which will contain many functions.
+
+<?php
+
+    session_start();
+
+    // error_reporting(0);
+
+    require 'database/connect.php';
+    require 'functions/users.php';
+
+
+?>
+
+The code found in the connect.php file contains the following which enables the page to connect to the database.
+
+<?php 
+
+    $connection_error = 'Sorry we are experiencing some connection problems';
+
+    // mysql_connect('localhost', 'root', '') or die(mysql_error());
+    
+
+    mysql_connect('localhost', 'root', '') or die($connection_error);
+    mysql_select_db('forum') or die($connection_error);
+
+?> 
+
+
+
+
+
+
+
 
 
 
