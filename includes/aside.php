@@ -1,6 +1,17 @@
 
 <aside>
 
-    <?php include '/includes/widgets/login.php'; ?>
+    <?php
+
+        if(logged_in()){
+
+            echo 'Logged in!';
+        }else{
+            include '/includes/widgets/login.php';
+        }
+    
+        
+    
+    ?>
 
 </aside>

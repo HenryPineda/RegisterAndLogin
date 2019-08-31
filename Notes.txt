@@ -117,6 +117,251 @@ The code found in the connect.php file contains the following which enables the 
 
 ?> 
 
+**************************************************************************************************************************
+
+In part 5, 6 and 7 I cover the login.
+
+The login process start with the form in the aside widget found in includes/widgets/login.php like the code below.
+
+
+<div class="widget">
+    <h2>Log in</h2>
+    <div class="inner">
+
+        <form action="login.php" method="post">
+
+            <ul id="login">
+
+                <li>
+                    Username:<br>
+                    <input type="text" name="username">
+                </li>
+
+                <li>
+                    Password:<br>
+                    <input type="text" name="password">
+                </li>
+
+                <input type="submit" value="Log in"> <br><br>
+                <a href="register.php">Register</a>
+
+            </ul>
+        </form>
+    
+    </div>
+
+</div>
+
+This form is posting to the login.php after the user fills out the form and click in the submit bottom. The login.php file found in the root directory
+and it has the following code.
+
+Steps done in the code below.
+
+1- include the init.php file to start the session, connect to the database and have access to other functions.
+
+<?php
+
+    session_start();
+
+    // error_reporting(0);
+
+    require 'database/connect.php';
+    require 'functions/general.php';
+    require 'functions/users.php';
+
+    $errors = array();
+
+?>
+
+2- include the header of the page.
+
+
+    include 'includes/overall/header.php';
+
+
+3- make sure the form is being submitted empty
+
+4- create an errors array in the init.php file.
+
+5- check if the user user_exists. This function live the following directory; 'core/functions/users.php'
+
+    function user_exists($username){
+
+
+        $username = sanitize($username);
+        $query = mysql_query("SELECT COUNT(`user_id`) as `CountUser` FROM `users` WHERE `username` = '$username'");
+
+        return (mysql_result($query, 0, 'CountUser') ==1) ? true : false;
+
+    }
+
+
+
+6- If the user exist check if the account is active using the user_active function which lives in the following directory 'core/functions/users.php'
+
+    function user_active($username){
+
+        $username = sanitize($username);
+
+        $query = mysql_query("SELECT COUNT(`user_id`) as `CountUser` FROM `users` WHERE `username` = '$username' AND `active` =1");
+
+        return (mysql_result($query, 0, 'CountUser') ==1) ? true : false; 
+    }
+
+7- login by setting the sessiong.
+
+    To login the user we have to make sure user that the username and password match our records in the database.
+
+    function user_id_from_username($username){
+
+        $username = sanitize($username);
+
+        $query = mysql_query("SELECT `user_id` FROM `users` WHERE `username`= '$username'");
+        
+        //What happens if the user id is not found?
+
+        return mysql_result($query, 0, 'user_id');
+    }
+
+    function login($username, $password){
+
+        $user_id = user_id_from_username($username);
+
+        $username = sanitize($username);
+        $password = md5(sanitize($password));
+
+        $query = mysql_query("SELECT COUNT(`user_id`) FROM `users` WHERE `username` = '$username' AND `password`= '$password'");
+        return (mysql_result($query, 0) ==1) ? $user_id : false;
+
+    }
+
+    if the login function returns true then we go ahead and set the session using the following code.
+
+    $login = login($username, $password);
+
+    if($login == false) {
+
+        $errors[] = 'Username and password combination is incorrect!';
+
+    }else {
+
+        //Set the session
+
+        //$_SESSION['user_id']= $login;
+        //Re direct to the home page.
+
+        $_SESSION['user_id'] = $login;
+
+        header("Location: index.php");
+
+        exit();
+    }
+
+
+
+8- print errors if there are any.
+
+9- include the footer.
+
+10- if there are no errors redirect to the home page in this case index.php.
+
+
+
+<?php
+
+    include 'core/init.php';
+
+    include 'includes/overall/header.php';
+
+
+   if (isset($_POST['username']) && isset($_POST['password']) &&   empty($_POST) ===false){
+
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        if(empty($username) || empty($password)){
+
+            $errors[] ='You need to enter a username and a password!';
+
+        }else if (user_exists($username) === false){
+
+            $errors[] ='We can\'t find that username. Have you registered?';
+        }else if (user_active($username) === false){
+
+            $errors[] = 'You need to activate your account!';
+        } else {
+
+            $login = login($username, $password);
+
+            if($login == false) {
+
+                $errors[] = 'Username and password combination is incorrect!';
+
+            }else {
+
+                //Set the session
+
+                //$_SESSION['user_id']= $login;
+                //Re direct to the home page.
+
+                $_SESSION['user_id'] = $login;
+
+                header("Location: index.php");
+
+                exit();
+            }
+        }
+
+   }
+
+    print_r($errors);
+
+
+
+   include 'includes/overall/footer.php';
+
+?>
+
+I also create the logout.php file to enable the user to be able to logout which has the following code.
+
+<?php 
+
+    session_start();
+    session_destroy();
+
+    header("Location: index.php");
+
+?>
+
+
+To make sure the to only show the login form when the user is not logged in the following code was added.
+
+<aside>
+
+    <?php
+
+        if(logged_in()){
+
+            echo 'Logged in!';
+        }else{
+            include '/includes/widgets/login.php';
+        }
+    
+    ?>
+
+</aside>
+
+The code above uses the logged_in() function to check if the user is logged in. This function lives in the following directory.
+'core/functions/users.php'
+
+
+    function logged_in(){
+
+        return (isset($_SESSION['user_id'])) ? true : false;
+    }
+
+
+
 
 
 
