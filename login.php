@@ -2,8 +2,6 @@
 
     include 'core/init.php';
 
-    include 'includes/overall/header.php';
-
 
    if (isset($_POST['username']) && isset($_POST['password']) &&   empty($_POST) ===false){
 
@@ -21,6 +19,11 @@
 
             $errors[] = 'You need to activate your account!';
         } else {
+
+            if (strlen($password) < 6) {
+                
+                $errors[] = 'Password is too short. Password must be at least 6 characters long!';
+            }
 
             $login = login($username, $password);
 
@@ -45,9 +48,25 @@
 
    }
 
-    print_r($errors);
+    // print_r($errors);
+
+    include 'includes/overall/header.php';
+
+    if (empty($errors) ===false) {
+        
+    
 
 
+?>
+
+        <h2>We tried to log you in but ......</h2>
+
+<?php 
+
+
+        echo print_out_errors($errors);
+
+    }
 
    include 'includes/overall/footer.php';
 

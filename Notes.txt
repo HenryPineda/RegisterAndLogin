@@ -361,6 +361,61 @@ The code above uses the logged_in() function to check if the user is logged in. 
     }
 
 
+****************************************************************************************************************************
+
+Part 8. Error handling.
+
+
+We created the print_out_errors which loops through the array of errors and returns an ul list of the errors.
+
+    function print_out_errors($errors){
+
+        return '<ul><li>'. implode('</li><li>', $errors). '</li></ul>';
+    }
+
+To convert the array values to a string I use the implode function.
+
+In the login.php file I added the following code.
+
+
+<?php 
+
+
+    include 'core/init.php';
+
+
+    ......................................
+    ......................................
+    ......................................
+    ......................................
+
+
+    include 'includes/overall/header.php';
+
+    if (empty($errors) ===false) {
+        
+
+?>
+
+        <h2>We tried to log you in but ......</h2>
+
+<?php 
+
+
+        echo print_out_errors($errors);
+
+    }
+
+   include 'includes/overall/footer.php';
+
+?>
+
+
+**********************************************************************************************************
+
+
+
+
 
 
 

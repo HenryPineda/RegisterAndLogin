@@ -10,8 +10,6 @@
             include '/includes/widgets/login.php';
         }
     
-        
-    
     ?>
 
 </aside>
