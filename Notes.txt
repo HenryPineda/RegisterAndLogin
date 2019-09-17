@@ -488,6 +488,58 @@ Steps.
 
 *******************************************************************************************************************************
 
+Part 11 Disable banned user.
+
+If a user's account is disable while the user surfing the site we need to log it out.
+
+1. Check if the user's account is active using the user_active function we created before.
+
+
+    function user_active($username){
+
+        $username = sanitize($username);
+
+        $query = mysql_query("SELECT COUNT(`user_id`) as `CountUser` FROM `users` WHERE `username` = '$username' AND `active` =1");
+
+        return (mysql_result($query, 0, 'CountUser') ==1) ? true : false; 
+    }
+
+
+2. we add the following code to the unit.php file
+
+
+    if (logged_in() ===true) {
+        $session_user_id = $_SESSION['user_id'];
+
+        $user_data = user_data($session_user_id, 'user_id', 'username', 'password', 'first_name', 'last_name', 'email');
+
+        // print_r($user_data);
+
+        if (user_active($user_data['username']) ===false) {
+            session_destroy();
+            header('Location: index.php');
+            exit();
+        }
+    }
+
+3. destroy the session using the following code.
+
+session_destroy();
+
+4. redirect to the home page.
+
+header("Location: index.php");
+
+5. exit the program.
+
+exit();
+
+*****************************************************************************************************************************
+
+
+
+
+
 
 
 
