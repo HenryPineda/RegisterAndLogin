@@ -413,6 +413,82 @@ In the login.php file I added the following code.
 
 **********************************************************************************************************
 
+Part 9 and Part 10.
+
+
+The main goal here is to retreive the data of the user that started the session.
+
+I created a $user_data variable in the init.php file. By creating the variable in this files, this variable can access anywhere in the site since this file almost added to every page in the site.
+
+    if (logged_in() ===true) {
+        $session_user_id = $_SESSION['user_id'];
+
+        $user_data = user_data($session_user_id, 'user_id', 'username', 'password', 'first_name', 'last_name', 'email');
+
+        // print_r($user_data);
+    }
+
+
+I only try to retreive the information of the user if the user is logged in.
+
+I created a variable that is going to hold the data returned from the user_data function created in the user.php file in the following directory core/fucntions/users.php.
+
+
+    function user_data($user_id){
+
+        $data = array();
+        $user_id = (int)$user_id;
+
+        $func_num_args = func_num_args();
+
+        $func_get_args = func_get_args();
+
+        if ($func_num_args > 1) {
+            unset($func_get_args[0]);
+
+            $fields = '`'. implode('`, `', $func_get_args). '`';
+
+            $query = mysql_query("SELECT $fields  FROM `users` WHERE `user_id` = '$user_id'");
+
+            $data = mysql_fetch_assoc($query);
+
+            return $data;
+        }     
+
+    }
+
+
+I use the func_num_args to get the number of arguments passed. We use the user_id from the session to use it as a parameter in the query.
+
+Here we use the func_get_args functions to save the arguments in a array.
+
+I unset the user_id parameter from session and then use the implode function to convert the array to string that can used in the query for the columns that I need to retreive from the database.
+
+
+The result from the query is converted into an associative array using the mysql_fetch_assoc function and the data is returned to the $user_data variable in the init.php file.
+
+
+Steps.
+
+1. Check if the user is logged in.
+
+2. Grab the user_id from the session.
+
+3. Get the number of arguments.
+
+4. Get the array of arguments.
+
+5. Convert the array of arguments to a string of columns.
+
+6. Create the query using the user_id and the columns name we got from imploding or converting the arguments to a string.
+
+7. Convert the result from the query to an associative array.
+
+8. Return the data.
+
+*******************************************************************************************************************************
+
+
 
 
 

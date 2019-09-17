@@ -5,7 +5,7 @@
 
         if(logged_in()){
 
-            echo 'Logged in!';
+            include '/includes/widgets/loggedin.php';
         }else{
             include '/includes/widgets/login.php';
         }
