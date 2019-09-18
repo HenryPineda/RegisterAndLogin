@@ -537,6 +537,66 @@ exit();
 *****************************************************************************************************************************
 
 
+Part 12 Showing the user count.
+
+
+We adding a new widget to show the user count in the aside.php file
+
+<aside>
+
+    <?php
+
+        if(logged_in()){
+
+            include '/includes/widgets/loggedin.php';
+        }else{
+            include '/includes/widgets/login.php';
+        }
+
+        include '/includes/widgets/user_count.php';
+    
+    ?>
+
+
+
+</aside>
+
+
+the user_count.php file in includes/widgets/ directory has the following code.
+
+
+
+<div class="widget">
+    <h2>Users</h2>
+    <div class="inner">
+
+        <?php 
+
+            $user_count = user_count();
+            $suffix = ($user_count !=1) ? 's': '';
+
+
+        ?>
+
+        We currently have <?php echo $user_count; ?> user<?php $suffix; ?>.
+    
+    </div>
+
+</div>
+
+
+I created the user_count function in the users.php file found in the core/functions/users.php file and it has the following code.
+
+   function user_count(){
+
+        return mysql_result(mysql_query("SELECT COUNT('user_id') FROM `users` WHERE `active` = 1"), 0);
+    }
+
+This function will return the count of the user_ids that active or otherwords that their active column has a value of 1.
+
+********************************************************************************************************************
+
+
 
 
 
