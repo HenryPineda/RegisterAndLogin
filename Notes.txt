@@ -596,9 +596,158 @@ This function will return the count of the user_ids that active or otherwords th
 
 ********************************************************************************************************************
 
+Part 13 and Part 14
+
+When the user is not loggedin and need to register we show this code 
+
+<aside>
+
+    <?php
+
+        if(logged_in()){
+
+            include '/includes/widgets/loggedin.php';
+        }else{
+            include '/includes/widgets/login.php';
+        }
+
+        include '/includes/widgets/user_count.php';
+    
+    ?>
 
 
 
+</aside>
+
+
+In the login.php file we have the following code.
+
+<div class="widget">
+    <h2>Log in</h2>
+    <div class="inner">
+
+        <form action="login.php" method="post">
+
+            <ul id="login">
+
+                <li>
+                    Username:<br>
+                    <input type="text" name="username">
+                </li>
+
+                <li>
+                    Password:<br>
+                    <input type="text" name="password">
+                </li>
+
+                <input type="submit" value="Log in"> <br><br>
+                <a href="register.php">Register</a>
+
+            </ul>
+        </form>
+    
+    </div>
+
+</div>
+
+On this part there is a link to the register.php file.
+
+
+In part 13 we created the form in the register.php file
+
+
+<form action="" method="POST">
+
+    <ul class="form">
+        
+        <li>
+            <label for="first_name">First name</label>
+            <input type="text" name="first_name">
+        </li>
+
+        <li>
+            <label for="last_name">Last name</label>
+            <input type="text" name="last_name">
+        </li>
+
+        <li>
+            <label for="email">Email</label>
+            <input type="text" name="email">
+        </li>
+
+        <li>
+            <label for="Username">Username</label>
+            <input type="text" name="username">
+        </li>
+
+        <li>
+            <label for="password">Password</label>
+            <input type="password" name="password">
+        </li>
+
+        <li>
+            <label for="repeat_name">Repeat password</label>
+            <input type="password" name="repeat_password">
+        </li>
+        <li><input type="submit" value="register"></li>
+    </ul>
+    
+
+</form>
+
+
+In part 14 we created the following code in the register.php file
+
+
+<?php include '/core/init.php'; ?>
+
+<?php include '/includes/overall/header.php'; ?>
+
+<?php 
+
+    if(empty($_POST) ==false){
+
+        // die($_POST);
+
+        $required_fields = array('first_name', 'last_name', 'email', 'username', 'password');
+
+        // echo '<pre>', print_r($_POST, true),'</pre>';
+
+        //if the field's value is empty and is in the array of required fields then append to error.
+
+        foreach ($_POST as $key => $value) {
+            if (empty($value) && in_array($key, $required_fields) ==true ) {
+                $errors[] = "The $key field is required";
+            }
+        }
+
+        if (empty($errors)) {
+            
+            if (user_exists($_POST['username'])) {
+                $errors[] = 'Sorry, The username \''.htmlentities($_POST['username']). '\' is already in use';
+            }
+        }
+
+        
+    }
+
+
+    echo '<pre>', print_r($errors, true), '</pre>';
+
+
+?>
+
+The interesting part here is validating the required data.
+
+we created an array of required fields and then using the foreach loop we iterate every element in the $_POST array and if the value is empty and is in the $required_fields array then is added to the $errors array.
+
+functions used.
+
+empty($value)
+
+in_array($key, $requiered_fields)
+
+**********************************************************************************************************************
 
 
 

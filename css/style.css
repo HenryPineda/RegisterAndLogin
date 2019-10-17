@@ -197,3 +197,21 @@ footer {
 
     clear:both;
 }
+
+/*.form::before, .form::after {
+
+    display: table;
+}*/
+
+
+.form label {
+
+    display: block;
+    width: 150px;
+    text-align: left;
+}
+
+/*.form li {
+
+    float:left;
+}*/
