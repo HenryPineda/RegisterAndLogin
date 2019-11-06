@@ -26,6 +26,27 @@
 			if (user_exists($_POST['username'])) {
 				$errors[] = 'Sorry, The username \''.htmlentities($_POST['username']). '\' is already in use';
 			}
+
+			if (preg_match("/\\s/", $_POST['username']) == true) {
+
+				$errors[] = 'Your username must not contain any spaces';
+			}
+
+			if (strlen($_POST['password']) < 6) {
+				$errors[] = 'Your password is too short, Your password needs to be at least 6 characters long!';
+			}
+
+			if ($_POST['password'] !== $_POST['repeat_password']) {
+				$errors[] = 'Your passwords do not match!, try again!';
+			}
+
+			if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ===false) {
+				$errors[] = 'A valid email address is required';
+			}
+
+			if (email_exists($_POST['email'])) {
+				$erros[] = 'Sorry, this email \''.$_POST['email'].'\' is already in use!';
+			}
 		}
 
 		

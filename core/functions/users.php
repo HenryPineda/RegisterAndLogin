@@ -45,6 +45,14 @@
 
     }
 
+    function email_exists($email){
+
+        $email = sanitize($email);
+
+        $query = mysql_query("SELECT COUNT(`user_id`) as `CountUser` FROM `users` WHERE `email` = '$email'");
+        return (mysql_result($query, 0,'CountUser') ==1) ? true : false;
+    }
+
     function user_active($username){
 
         $username = sanitize($username);

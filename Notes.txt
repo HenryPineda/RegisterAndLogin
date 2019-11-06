@@ -749,6 +749,51 @@ in_array($key, $requiered_fields)
 
 **********************************************************************************************************************
 
+In part 15 and part 16 we add the following code in the register.php file
+
+        if (empty($errors)) {
+            
+            if (user_exists($_POST['username'])) {
+                $errors[] = 'Sorry, The username \''.htmlentities($_POST['username']). '\' is already in use';
+            }
+
+            if (preg_match("/\\s/", $_POST['username']) == true) {
+
+                $errors[] = 'Your username must not contain any spaces';
+            }
+
+            if (strlen($_POST['password']) < 6) {
+                $errors[] = 'Your password is too short, Your password needs to be at least 6 characters long!';
+            }
+
+            if ($_POST['password'] !== $_POST['repeat_password']) {
+                $errors[] = 'Your passwords do not match!, try again!';
+            }
+
+            if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ===false) {
+                $errors[] = 'A valid email address is required';
+            }
+
+            if (email_exists($_POST['email'])) {
+                $erros[] = 'Sorry, this email \''.$_POST['email'].'\' is already in use!';
+            }
+        }
+
+
+The preg_match function is a php regular exprssion that checks if the username has spaces.
+
+The filter_var function validates if email is valid email.
+
+To check if the email is already being used we created the following functions in the users.php file in the functions folder.
+
+   function email_exists($email){
+
+        $email = sanitize($email);
+
+        $query = mysql_query("SELECT COUNT(`user_id`) as `CountUser` FROM `users` WHERE `email` = '$email'");
+        return (mysql_result($query, 0,'CountUser') ==1) ? true : false;
+    }
+
 
 
 
