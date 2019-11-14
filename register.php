@@ -53,51 +53,99 @@
 	}
 
 
-	echo '<pre>', print_r($errors, true), '</pre>';
+	// echo '<pre>', print_r($errors, true), '</pre>';
 
 
 ?>
 
-<h1>Register</h1>
+<?php
 
-<form action="" method="POST">
+	if(isset($_GET['success']) && empty($_GET['success'])){
 
-	<ul class="form">
-		
-		<li>
-			<label for="first_name">First name</label>
-			<input type="text" name="first_name">
-		</li>
+		echo 'You have been registered!';
 
-		<li>
-			<label for="last_name">Last name</label>
-			<input type="text" name="last_name">
-		</li>
 
-		<li>
-			<label for="email">Email</label>
-			<input type="text" name="email">
-		</li>
-
-		<li>
-			<label for="Username">Username</label>
-			<input type="text" name="username">
-		</li>
-
-		<li>
-			<label for="password">Password</label>
-			<input type="password" name="password">
-		</li>
-
-		<li>
-			<label for="repeat_name">Repeat password</label>
-			<input type="password" name="repeat_password">
-		</li>
-		<li><input type="submit" value="register"></li>
-	</ul>
+	}else{
 	
+?>
+	<h1>Register</h1>
 
-</form>
+	<?php 
+
+		if (empty($_POST) ===false && empty($errors) ===true) {
+
+			$register_data = array(
+
+				"username" => $_POST['username'],
+				"password" => $_POST['password'],
+				"first_name" => $_POST['first_name'],
+				"last_name" => $_POST['last_name'],
+				"email" => $_POST['email']
+
+			);
+
+			// $register_data['password'] =md5($register_data['password']);
+
+			register_user($register_data);
+
+			header("Location: register.php?success");
+
+			exit();
+			
+		}else {
+
+			echo print_out_errors($errors);
+		}
+
+
+	?>
+
+	<form action="" method="POST">
+
+		<ul class="form">
+			
+			<li>
+				<label for="first_name">First name</label>
+				<input type="text" name="first_name">
+			</li>
+
+			<li>
+				<label for="last_name">Last name</label>
+				<input type="text" name="last_name">
+			</li>
+
+			<li>
+				<label for="email">Email</label>
+				<input type="text" name="email">
+			</li>
+
+			<li>
+				<label for="Username">Username</label>
+				<input type="text" name="username">
+			</li>
+
+			<li>
+				<label for="password">Password</label>
+				<input type="password" name="password">
+			</li>
+
+			<li>
+				<label for="repeat_name">Repeat password</label>
+				<input type="password" name="repeat_password">
+			</li>
+			<li><input type="submit" value="register"></li>
+		</ul>
+		
+
+	</form>
+<?php
+
+	}
+
+
+?>
+
+
 
 
 <?php include '/includes/overall/footer.php'; ?>
