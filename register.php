@@ -1,6 +1,8 @@
 
 <?php include '/core/init.php'; ?>
 
+<?php logged_in_redirect(); ?>
+
 <?php include '/includes/overall/header.php'; ?>
 
 <?php 

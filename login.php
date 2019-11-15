@@ -2,51 +2,59 @@
 
     include 'core/init.php';
 
+    logged_in_redirect();
 
-   if (isset($_POST['username']) && isset($_POST['password']) &&   empty($_POST) ===false){
+    if(empty($_POST) ===false){
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+       if (isset($_POST['username']) && isset($_POST['password']) &&   empty($_POST) ===false){
 
-        if(empty($username) || empty($password)){
+            $username = $_POST['username'];
+            $password = $_POST['password'];
 
-            $errors[] ='You need to enter a username and a password!';
+            if(empty($username) || empty($password)){
 
-        }else if (user_exists($username) === false){
+                $errors[] ='You need to enter a username and a password!';
 
-            $errors[] ='We can\'t find that username. Have you registered?';
-        }else if (user_active($username) === false){
+            }else if (user_exists($username) === false){
 
-            $errors[] = 'You need to activate your account!';
-        } else {
+                $errors[] ='We can\'t find that username. Have you registered?';
+            }else if (user_active($username) === false){
 
-            if (strlen($password) < 6) {
-                
-                $errors[] = 'Password is too short. Password must be at least 6 characters long!';
+                $errors[] = 'You need to activate your account!';
+            } else {
+
+                if (strlen($password) < 6) {
+                    
+                    $errors[] = 'Password is too short. Password must be at least 6 characters long!';
+                }
+
+                $login = login($username, $password);
+
+                if($login == false) {
+
+                    $errors[] = 'Username and password combination is incorrect!';
+
+                }else {
+
+                    //Set the session
+
+                    //$_SESSION['user_id']= $login;
+                    //Re direct to the home page.
+
+                    $_SESSION['user_id'] = $login;
+
+                    header("Location: index.php");
+
+                    exit();
+                }
             }
 
-            $login = login($username, $password);
+       }
 
-            if($login == false) {
+    }else {
 
-                $errors[] = 'Username and password combination is incorrect!';
-
-            }else {
-
-                //Set the session
-
-                //$_SESSION['user_id']= $login;
-                //Re direct to the home page.
-
-                $_SESSION['user_id'] = $login;
-
-                header("Location: index.php");
-
-                exit();
-            }
-        }
-
-   }
+        $errors[] ='No data received!';
+    }
 
     // print_r($errors);
 

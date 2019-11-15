@@ -995,6 +995,98 @@ If the page has a GET['success'] request that means the user has been registered
 
 *************************************************************************************************
 
+In part 20 we are trying to protect the following pages from being access if you are not logged in.
+
+downloads.php
+forum.php
+
+
+use the following function that we created in general.php file. If the user is not logged in then this function will redirect the user to the protected.php page.
+
+
+function protected_page() {
+    
+    if(logged_in() ===false){
+
+        header('Location: protected.php');
+
+        exit();
+
+    }
+}
+
+
+In the protected.php page we have the following code.
+
+<?php include '/core/init.php'; ?>
+
+<?php include '/includes/overall/header.php'; ?>
+
+    <h1>Protected page.</h1>
+    <p>You need to be logged in to be able to see this page!</p>
+    
+<?php include '/includes/overall/footer.php'; ?>
+
+
+To use the function in the downloads.php page we had the following code.
+
+
+<?php include '/core/init.php'; ?>
+
+<?php protect_page(); ?>
+
+<?php include '/includes/overall/header.php'; ?>
+
+    <h1>Downloads</h1>
+    <p>Just a template</p>
+    
+<?php include '/includes/overall/footer.php'; ?>
+
+
+We also try to redirect the users to the index.php page if the user want to acces the page below being logged in.
+
+register.php
+login.php
+
+
+we created the following code to the create the logged_in_redirect function
+
+function logged_in_redirect(){
+    
+    if(logged_in() ===true){
+
+        header('Location: index.php');
+
+        exit();
+    }
+}
+
+
+we use this function in the login.php page the following way.
+
+<?php
+
+    include 'core/init.php';
+
+    logged_in_redirect();
+
+    if(empty($_POST) ===false){
+
+       if (isset($_POST['username']) && isset($_POST['password']) &&   empty($_POST) ===false){
+
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+
+            ...........
+
+
+************************************************************************************************************** 
+
+
+
+
+
 
 
 

@@ -13,8 +13,6 @@
 
         mysql_query("INSERT INTO `users` ($keys) VALUES ($values)");
 
-
-
         // print_r($values);
 
     }
