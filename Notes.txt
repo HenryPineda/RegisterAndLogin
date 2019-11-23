@@ -1082,6 +1082,272 @@ we use this function in the login.php page the following way.
 
 
 ************************************************************************************************************** 
+In part 21, 22, and 23 we create the functionality to change the password.
+
+
+If the user is logged in, in the aside partial file we add the loggedin widget
+
+
+
+<aside>
+
+    <?php
+
+        if(logged_in()){
+
+            include '/includes/widgets/loggedin.php';
+        }else{
+            include '/includes/widgets/login.php';
+        }
+
+        include '/includes/widgets/user_count.php';
+    
+    ?>
+
+
+
+</aside>
+
+In the loggedin file we add a link to the changepassword.php file 
+
+<div class="widget">
+    <h2>Hello, <?php echo $user_data['first_name'] ?></h2>
+    <div class="inner">
+
+        <li><a href="logout.php">Log out</a></li>
+
+        <li><a href="changepassword.php">Change password</a></li>
+    
+    </div>
+
+</div>
+
+
+In the changepassword.php file we add the following code
+
+
+<?php include '/core/init.php'; ?>
+
+<?php protect_page(); ?>
+
+<?php 
+
+
+
+    if(empty($_POST) ===false){
+
+        $required_fields = array('current_password', 'new_password', 'new_password_again');
+
+        foreach ($_POST as $key => $value) {
+            if(empty($value) ===true && in_array($key, $required_fields)){
+
+                $errors[] ="The $key is required!";
+
+                break 1;
+            }
+        }
+
+        if(md5($_POST['current_password']) === $user_data['password']){
+
+            // echo 'We go ahead an validate the new password!';
+
+            if(strlen($_POST['new_password']) < 6){
+
+                $errors[] = 'Password is too short. The password must be at least 6 characters long!';
+            }else if (trim($_POST['new_password']) !== trim($_POST['new_password_again'])) {
+                
+                $errors[] = 'Passwords do not match!';
+            }
+
+
+
+        }else{
+
+            $errors[] = 'Contraseña incorrecta! Vuela a intentarlo!';
+        }
+
+    }
+
+    //print_r($errors);
+
+
+
+
+?>
+
+<?php include '/includes/overall/header.php'; ?>
+
+<?php 
+
+    if(isset($_GET['success']) && empty($_GET['success'])){
+
+        echo 'Your password has been changed!';
+    }else {
+
+
+    
+
+
+?>
+
+    <h1>Change password</h1>
+
+<?php 
+
+
+
+    if(empty($_POST) ===false && empty($errors) ===true){
+
+        $new_password = md5($_POST['new_password']);
+
+        $user_id = $user_data['user_id'];
+
+
+        change_password($new_password, $user_id);
+
+        header("Location: changepassword.php?success");
+
+        exit();
+
+    }else if(empty($errors) ===false){
+
+        echo print_out_errors($errors);
+    
+    }
+
+
+?>
+    
+    <form action="" method="post">
+
+        <ul>
+            
+            <li>
+                <label for="current_password">Current password*:</label>
+                
+                <input type="text" name="current_password">
+            </li>
+
+            <li>
+                <label for="new_password">New password*:</label>
+                <input type="text" name="new_password">
+            </li>
+
+            <li>
+                <label for="new_password_again">New password again*:</label>
+                <input type="text" name="new_password_again">
+            </li>
+
+            <li>
+                
+                <input type="submit" value="Guardar">
+            </li>
+        </ul>
+        
+
+
+    </form>
+
+<?php
+
+    }
+
+?>
+
+    
+<?php include '/includes/overall/footer.php'; ?>
+
+
+
+Only the users that are loggedin will have access to this file. we enforce this using the following function.
+
+<?php include '/core/init.php'; ?>
+
+<?php protect_page(); ?>
+
+We created this function in the general.php file and it has this code
+
+  function protect_page(){
+
+        if(logged_in() ===false){
+
+            header("Location: protected.php");
+
+            exit();
+        }
+    }
+
+
+We validate is the form has been submitted and the password has been changed successfully using the following code.
+
+
+if(isset($_GET['success']) && empty($_GET['success']))
+
+{
+    
+
+    echo "The password has been changed successfully!";
+}else {
+    
+    //Show the form so the user can fill out the form and then submit it to change the password.
+
+}
+
+
+To change the password we use the following code.
+
+if(empty($_POST) ===false && empty($errors) ===true){
+
+        $new_password = md5($_POST['new_password']);
+
+        $user_id = $user_data['user_id'];
+
+
+        change_password($new_password, $user_id);
+
+        header("Location: changepassword.php?success");
+
+        exit();
+
+    }else if(empty($errors) ===false){
+
+        echo print_out_errors($errors);
+    
+    }
+
+
+use created the change_password function in the user.php file and we added the following code
+
+  function change_password($new_password, $user_id){
+
+        mysql_query("UPDATE `users` SET `password`= '$new_password' WHERE `user_id` = '$user_id'");
+
+    }
+
+Then use the header function to redirect the user to the same page but passing a GET request with a success parameter.
+
+ header("Location: changepassword.php?success");
+
+        exit();
+
+Then the page reload and reevaluate this code
+
+
+if(isset($_GET['success']) && empty($_GET['success']))
+
+{
+    
+
+    echo "The password has been changed successfully!";
+
+and then the message that the password has been changed.
+
+
+****************************************************************************************************
+
+
+
+
 
 
 

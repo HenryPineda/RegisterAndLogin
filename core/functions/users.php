@@ -17,6 +17,12 @@
 
     }
 
+    function change_password($new_password, $user_id){
+
+        mysql_query("UPDATE `users` SET `password`= '$new_password' WHERE `user_id` = '$user_id'");
+
+    }
+
     function user_count(){
 
         return mysql_result(mysql_query("SELECT COUNT('user_id') FROM `users` WHERE `active` = 1"), 0);
